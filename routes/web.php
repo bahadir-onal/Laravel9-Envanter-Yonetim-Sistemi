@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Demo\DemoController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Pos\SupplierController;
 
 
 Route::get('/', function () {
@@ -25,15 +26,14 @@ Route::controller(AdminController::class)->group(function () {
 
     Route::get('/change/password', 'ChangePassword')->name('change.password');
     Route::post('/update/password', 'UpdatePassword')->name('update.password');
-     
 });
 
+ // Suppliers All Route 
+ Route::controller(SupplierController::class)->group(function () {
+    Route::get('/supplier/all', 'SupplierAll')->name('supplier.all');
+});
 
  
-
-
-
-
 
 Route::get('/dashboard', function () {
     return view('admin.index');
