@@ -27,7 +27,7 @@
                             <div class="col-md-4">
                                 <div class="md-3">
                                     <label for="example-text-input" class="form-label">Supplier Name</label>
-                                    <select id="supplier_id" name="supplier_id" class="form-select" aria-label="Default select example">
+                                    <select id="supplier_id" name="supplier_id" class="form-select select2" aria-label="Default select example">
                                         <option selected="">Select supplier name</option>
                                         @foreach($supplier as $supp)
                                             <option value="{{ $supp->id }}">{{ $supp->name }}</option>

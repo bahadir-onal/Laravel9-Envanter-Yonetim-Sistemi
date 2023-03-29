@@ -89,7 +89,8 @@ class PurchaseController extends Controller
         return view('backend.purchase.puchase_pending',compact('allData'));
     }
 
-    public function PurchaseApprove($id){
+    public function PurchaseApprove($id)
+    {
 
         $purchase = Purchase::findOrFail($id);
         $product = Product::where('id',$purchase->product_id)->first();

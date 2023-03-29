@@ -21,6 +21,9 @@
         <!-- Responsive datatable examples -->
         <link href="{{ asset('backend/assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />  
 
+        <!-- Select2 css -->
+        <link href="{{ asset('backend/assets/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css">
+
         <!-- Bootstrap Css -->
         <link href="{{ asset('backend/assets/css/bootstrap.min.css') }}" id="bootstrap-style" rel="stylesheet" type="text/css" />
         <!-- Icons Css -->
@@ -138,7 +141,8 @@
         <script src="{{ asset('backend/assets/js/code.js') }}"></script>
         <script src="{{ asset('backend/assets/js/handlebars.js') }}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
-
+        <!-- select2 js -->
+        <script src="{{ asset('backend/assets/libs/select2/js/select2.min.js') }}"></script>
+        <script src="{{ asset('backend/assets/js/pages/form-advanced.init.js') }}"></script>
     </body>
-
 </html>

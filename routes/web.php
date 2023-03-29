@@ -93,6 +93,11 @@ Route::controller(AdminController::class)->group(function () {
     Route::get('/purchase/approve/{id}', 'PurchaseApprove')->name('purchase.approve');
 });
 
+ // Purchase All Route 
+ Route::controller(PurchaseController::class)->group(function () {
+    Route::get('/invoice/all', 'InvoiceAll')->name('invoice.all');
+});
+
  // Default All Route 
  Route::controller(DefaultController::class)->group(function () {
     Route::get('/get-category', 'GetCategory')->name('get-category');
