@@ -64,7 +64,7 @@
 <!------------------------------------------------------------------------------------------------------------------------------------>
 
                     <div class="card-body">
-                        <form action="{{ route('purchase.store') }}" method="post">
+                        <form action="{{ route('invoice.store') }}" method="post">
                         @csrf
                             <table class="table-sm table-bordered" width="100%" style="border-color: #ddd;">
                                 <thead>
@@ -82,8 +82,16 @@
                                 <tbody id="addRow" class="addRow">
 
                                 </tbody>
-
                                 <tbody>
+
+                                    <tr>
+                                        <td colspan="4"> Discount</td>
+                                        <td>
+                                            <input type="text" name="discount_amount" placeholder="Discount Amount" value="0" id="discount_amount" class="form-control estimated_amount" >
+                                        </td>
+                                    </tr>
+
+
                                     <tr>
                                         <td colspan="4"> Grand Total</td>
                                         <td>
@@ -100,8 +108,49 @@
                                         <textarea class="form-control" rows="3" placeholder="Write description here" name="description" id="description"></textarea>
                                     </div>
                                 </div>
-                            </div>
-                            <br>
+                            </div><br>
+
+                            <div class="row">
+                                <div class="form-group col-md-3">
+                                    <label>Paid Status</label>
+                                    <select id="paid_status" name="paid_status" class="form-select">
+                                        <option selected="">Select status</option>
+                                        <option value="full_paid">Full Paid</option>
+                                        <option value="full_due">Full Due</option>
+                                        <option value="partial_paid">Partial Paid</option>
+                                    </select><br>
+                                    <input type="text" name="paid_amount" id="paid_amount" class="form-control paid_amount" placeholder="Enter Paid Amount" style="display: none;" >
+                                </div>
+
+                                <div class="form-group col-md-9">
+                                    <label>Customer Name</label>
+                                    <select id="customer_id" name="customer_id" class="form-select">
+                                        <option selected="">Select Customer</option>
+                                        @foreach($customer as $cust)
+                                            <option value="{{ $cust->id }}">{{ $cust->name }} - {{ $cust->mobile_no }}</option>
+                                        @endforeach
+                                        <option value="0">-New Customer-</option>
+                                    </select><br>
+                                </div>
+                            </div><br>
+
+                            <!-- Hide Add Customer Form -->
+                            <div class="row new_customer" style="display:none">
+                                <div class="form-group col-md-4">
+                                    <input type="text" name="name" id="name" class="form-control" placeholder="Write Customer Name">
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <input type="text" name="mobile_no" id="mobile_no" class="form-control" placeholder="Write Customer Mobile No">
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <input type="email" name="email" id="email" class="form-control" placeholder="Write Customer Email">
+                                </div>
+                            </div><br>
+                            <!-- End Hide Add Customer Form -->
+
+
                             <div class="form-group">
                                 <button type="submit" class="btn btn-info" id="storeButton"> Invoice Store</button>
                             </div>   
@@ -117,8 +166,8 @@
 <script id="document-template" type="text/x-handlebars-template">
 
     <tr class="delete_add_more_item" id="delete_add_more_item">
-        <input type="hidden" name="date[]" value="@{{date}}">
-        <input type="hidden" name="invoice_no[]" value="@{{invoice_no}}">
+        <input type="hidden" name="date" value="@{{date}}">
+        <input type="hidden" name="invoice_no" value="@{{invoice_no}}">
 
         <td>
             <input type="hidden" name="category_id[]" value="@{{category_id}}">
@@ -187,11 +236,17 @@
             });
 
             $(document).on('keyup click','.unit_price,.selling_qty', function(){
-            var unit_price = $(this).closest("tr").find("input.unit_price").val();
-            var qty = $(this).closest("tr").find("input.selling_qty").val();
-            var total = unit_price * qty;
-            $(this).closest("tr").find("input.selling_price").val(total);
-            totalAmountPrice();
+                var unit_price = $(this).closest("tr").find("input.unit_price").val();
+                var qty = $(this).closest("tr").find("input.selling_qty").val();
+                var total = unit_price * qty;
+                $(this).closest("tr").find("input.selling_price").val(total);
+                $('#discount_amount').trigger('keyup');
+
+            
+            $(document).on('keyup','#discount_amount', function(){
+                totalAmountPrice();
+            });
+
 
             });
 
@@ -203,6 +258,12 @@
                     sum += parseFloat(value);
                 }
             });
+
+            var discount_amount = parseFloat($('#discount_amount').val());
+            if(!isNaN(discount_amount) && discount_amount.length != 0){
+                sum -= parseFloat(discount_amount);
+            }
+
             $('#estimated_amount').val(sum);
         } 
         });
@@ -241,6 +302,28 @@
                     }
                 });
             });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).on('change','#paid_status', function(){
+            var paid_status = $(this).val();
+            if (paid_status == 'partial_paid') {
+                $('.paid_amount').show();
+            }else{
+                $('.paid_amount').hide();
+            }
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).on('change','#customer_id', function(){
+            var customer_id = $(this).val();
+            if (customer_id == '0') {
+                $('.new_customer').show();
+            }else{
+                $('.new_customer').hide();
+            }
         });
     </script>
 
