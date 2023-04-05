@@ -38,7 +38,7 @@
                                             </tr>
                                         </tbody>
                                     </table>
-                                        <form method="post" action="">
+                                        <form method="post" action="{{ route('approval.store',$invoice->id) }}">
                                             @csrf
                                             <table border="1" class="table table-dark" width="100%">
                                                 <thead>
@@ -59,13 +59,18 @@
                                                     @endphp
                                                 @foreach($invoice['invoice_details'] as $key => $details)
                                                     <tr>
-                                                    <td class="text-center">{{ $key+1 }}</td>
-                                                    <td class="text-center">{{ $details['category']['name'] }}</td>
-                                                    <td class="text-center">{{ $details['product']['name'] }}</td>
-                                                    <td class="text-center" style="background-color: #8B008B;" >{{ $details['product']['quantity'] }}</td>
-                                                    <td class="text-center">{{ $details->selling_qty }}</td>
-                                                    <td class="text-center">{{ $details->unit_price }}</td>
-                                                    <td class="text-center">{{ $details->selling_price }}</td>
+                                                        <input type="hidden" name="category_id[]" value="{{ $details->category_id }}">
+                                                        <input type="hidden" name="product_id[]" value="{{ $details->product_id }}">
+                                                        <input type="hidden" name="selling_qty[{{$details->id}}]" value="{{ $details->selling_qty }}">
+
+
+                                                        <td class="text-center">{{ $key+1 }}</td>
+                                                        <td class="text-center">{{ $details['category']['name'] }}</td>
+                                                        <td class="text-center">{{ $details['product']['name'] }}</td>
+                                                        <td class="text-center" style="background-color: #8B008B;" >{{ $details['product']['quantity'] }}</td>
+                                                        <td class="text-center">{{ $details->selling_qty }}</td>
+                                                        <td class="text-center">{{ $details->unit_price }}</td>
+                                                        <td class="text-center">{{ $details->selling_price }}</td>
                                                     </tr>
                                                     @php
                                                         $total_sum += $details->selling_price;

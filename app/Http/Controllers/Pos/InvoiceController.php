@@ -171,4 +171,43 @@ class InvoiceController extends Controller
         $invoice = Invoice::with('invoice_details')->findOrFail($id);
         return view('backend.invoice.invoice_approve',compact('invoice'));
     }
+
+    public function ApprovalStore(Request $request,$id)
+    {
+        foreach($request->selling_qty as $key => $val){ 
+            $invoice_details = InvoiceDetail::where('id',$key)->first();
+            $product = Product::where('id',$invoice_details->product_id)->first();
+
+            if ($product->quantity < $request->selling_qty[$key]) {
+                $notification = array(
+                    'message' => 'Sorry you approve maximum value',
+                    'alert-type' => 'error'
+                );
+
+                return redirect()->back()->with($notification);
+            }
+        }
+
+        $invoice = Invoice::findOrFail($id);
+        $invoice->updated_by = Auth::user()->id;
+        $invoice->status = '1';
+
+        DB::transaction(function() use($request,$invoice,$id){
+            foreach($request->selling_qty as $key => $val){
+             $invoice_details = InvoiceDetail::where('id',$key)->first();
+             $product = Product::where('id',$invoice_details->product_id)->first();
+             $product->quantity = ((float)$product->quantity) - ((float)$request->selling_qty[$key]);
+             $product->save();
+            }
+        
+            $invoice->save();
+        });
+
+        $notification = array(
+            'message' => 'Invoice approve successfully',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('invoice.pending.list')->with($notification);
+    }
 }
