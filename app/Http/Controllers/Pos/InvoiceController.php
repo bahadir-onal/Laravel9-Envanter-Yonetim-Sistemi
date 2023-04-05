@@ -210,4 +210,16 @@ class InvoiceController extends Controller
 
         return redirect()->route('invoice.pending.list')->with($notification);
     }
+
+    public function PrintInvoiceList()
+    {
+        $allData = Invoice::orderBy('date','desc')->orderBy('id','desc')->where('status', '1')->get();
+        return view('backend.invoice.print_invoice_list',compact('allData'));
+    }
+
+    public function PrintInvoice($id)
+    {
+        $invoice = Invoice::with('invoice_details')->findOrFail($id);
+        return view('backend.pdf.invoice_pdf',compact('invoice'));
+    }
 }
