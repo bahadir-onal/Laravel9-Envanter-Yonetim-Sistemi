@@ -8,12 +8,12 @@
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Daily Invoice Report </h4><br><br>
-                    <form method="" action="" target="_blank" id="myForm">
+                    <form method="GET" action="{{ route('daily.invoice.pdf') }}" target="_blank" id="myForm">
                         <div class="row">
 
                             <div class="col-md-4">
                                 <div class="md-3">
-                                    <label for="example-text-input" class="form-label">Startt Date</label>
+                                    <label for="example-text-input" class="form-label">Start Date</label>
                                     <input class="form-control example-date-input" type="date" name="start_date" id="start_date">
                                 </div>
                             </div>
