@@ -24,4 +24,17 @@ class StockController extends Controller
         $allData = Product::orderBy('supplier_id','asc')->orderBy('category_id','asc')->get();
         return view('backend.pdf.stock_report_pdf',compact('allData'));
     }
+
+    public function StockSupplierWise()
+    {
+        $supplier = Supplier::all();
+        $category = Category::all();
+        return view('backend.stock.supplier_product_wise_report',compact('supplier','category'));
+    }
+
+    public function SupplierWisePdf(Request $request)
+    {
+        $allData = Product::orderBy('supplier_id','asc')->orderBy('category_id','asc')->where('supplier_id',$request->supplier_id)->get();
+        return view('backend.pdf.supplier_wise_report_pdf',compact('allData'));
+    }
 }
