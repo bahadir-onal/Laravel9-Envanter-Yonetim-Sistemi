@@ -78,13 +78,17 @@
                                                                 <tr>
                                                                     <td><strong>Sl </strong></td>
                                                                     <td class="text-center"><strong>Supplier Name </strong></td>
-                                                                    <td class="text-center"><strong>Unit  </strong>
+                                                                    <td class="text-center"><strong>Unit </strong>
                                                                     </td>
-                                                                    <td class="text-center"><strong>Category</strong>
+                                                                    <td class="text-center"><strong>Category </strong>
                                                                     </td>
-                                                                    <td class="text-center"><strong>Product Name</strong>
+                                                                    <td class="text-center"><strong>Product Name </strong>
                                                                     </td>
-                                                                    <td class="text-center"><strong>Stock  </strong>
+                                                                    <td class="text-center"><strong>In Qty </strong>
+                                                                    </td>
+                                                                    <td class="text-center"><strong>Out Qty </strong>
+                                                                    </td>
+                                                                    <td class="text-center"><strong>Stock </strong>
                                                                     </td>
                                                                 </tr>
                                                                 </thead>
@@ -92,12 +96,27 @@
                                                                 <!-- foreach ($order->lineItems as $line) or some such thing here -->
 
                                                                     @foreach($allData as $key => $item)
+
+                                                                    @php
+                                                                        $buying_total = App\Models\Purchase::where('category_id',$item->category_id)
+                                                                            ->where('product_id',$item->id)
+                                                                            ->where('status', '1')
+                                                                            ->sum('buying_qty');
+
+                                                                        $selling_total = App\Models\InvoiceDetail::where('category_id',$item->category_id)
+                                                                            ->where('product_id',$item->id)
+                                                                            ->where('status', '1')
+                                                                            ->sum('selling_qty');
+                                                                    @endphp
+
                                                                     <tr>
                                                                         <td class="text-center">{{ $key+1 }}</td>
                                                                         <td class="text-center">{{ $item['supplier']['name'] }}</td>
                                                                         <td class="text-center">{{ $item['unit']['name'] }}</td>
                                                                         <td class="text-center">{{ $item['category']['name'] }}</td>
                                                                         <td class="text-center">{{ $item->name }}</td>
+                                                                        <td class="text-center">{{ $buying_total}}</td>
+                                                                        <td class="text-center">{{ $selling_total }}</td>
                                                                         <td class="text-center">{{ $item->quantity }}</td>
                                                                     </tr>
 
