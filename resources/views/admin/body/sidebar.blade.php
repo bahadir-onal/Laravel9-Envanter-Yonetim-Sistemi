@@ -79,6 +79,9 @@
                                 <ul class="sub-menu" aria-expanded="false">
                                     <li><a href="{{ route('purchase.pending') }}">Approval Purchase</a></li>
                                 </ul>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    <li><a href="{{ route('daily.purchase.report') }}">Daily Purchase Report</a></li>
+                                </ul>
                             </li>
 
                             <li>
